@@ -1,0 +1,39 @@
+<?php
+require_once 'rnheader.php';
+
+	$query = "SELECT * FROM rnmessages WHERE pm=0 ORDER BY time DESC LIMIT 10";
+	$result = queryMysql($query);
+	$num = mysql_num_rows($result);
+	
+	for ($j = 0 ; $j < $num ; ++$j)
+	{
+		$row = mysql_fetch_row($result);
+
+		if ($row[3] == 0 ||
+		    $row[1] == $user ||
+		    $row[2] == $user)
+		{
+			
+?>
+			<div class="maincontents">
+				<h2><?php echo "<a href='messages.php?view=$row[1]'>$row[1]'s List</a> "; ?> </h2>
+				<div class="about">
+					<p class="autor">작성자 : <strong><?php echo "$row[1]"; ?></strong></p>
+					<p class="date"><?php echo date('m월 j일 y:g:sa', $row[4]); ?></p>
+				</div>
+				<div class="post">
+					<img src="images/<?php echo $row[7]; ?>" alt="" width="200" />
+					<p class="style1"><?php if($row[5]==""){echo "제목 없음";} else {echo $row[5];} ?></p>
+					<p><?php echo $row[6]; ?></p>
+
+				</div>
+			</div>
+
+<?php
+		}
+	}
+
+if (!$num) echo "<li>No messages yet</li><br />";
+?>
+
+
